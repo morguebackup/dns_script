@@ -34,7 +34,7 @@ else
             break
         fi
     done
-    if [[ "$type" != 'slave' ]]; then
+    if [[ "$type" == 'slave' ]]; then
         while true; do
         read -p "enter the IP for the slave domain: $domain: " SLAV_IP #takes IP input
         if [[ ! "$SLAV_IP" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then #if the Ip add is not equal tot eh regex match of 1 or more numbers after every period
