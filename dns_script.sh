@@ -112,7 +112,7 @@ ZONE_FILE=${ZONE_PATH}db.${domain}
 
 END
     elif [[ "$OVERWRITE" == 'y' && "$rev_choice" == 'y' ]]; then
-        if [[ "$type" == "slave" ]]
+        if [[ "$type" == "slave" ]]; then
             IFS='.' read -r A B C D <<< "$SLAV_IP" #splits IP add by the periods and assigns each section  to a vairbale
             REV_ZONE="${C}.${B}.${A}.in-addr.arpa"
         else
