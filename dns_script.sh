@@ -44,6 +44,7 @@ else
             break #breaks da loop
         fi
     done
+    fi
 
     while true; do
         read -p "do you want to configure reverse zones (y/n)? "  rev_choice
@@ -81,6 +82,7 @@ else
             break
         fi 
     done
+    fi
     echo "DNS SETUP
     --------------------------------------------
     domain: $domain
@@ -128,9 +130,9 @@ END
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
             echo "file /var/cache/bind/db.$domain;"
-        else
-            echo "file $ZONE_FILE;"
-        fi )
+            else
+                echo "file $ZONE_FILE;"
+            fi )
 };
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
     };
@@ -165,7 +167,7 @@ END
 
 END
     elif [[ "$OVERWRITE" == 'n' && "$rev_choice" == 'y' ]]; then
-        if [[ "$type" == "slave" ]]
+        if [[ "$type" == "slave" ]]; then
                     IFS='.' read -r A B C D <<< "$SLAV_IP" #splits IP add by the periods and assigns each section  to a vairbale
                     REV_ZONE="${C}.${B}.${A}.in-addr.arpa"
                 else
@@ -202,7 +204,7 @@ END
     };
 
 END
-   fi 
+    fi 
    echo "named.conf.local files modified. Now making zone files...."
     
  
@@ -221,7 +223,7 @@ END
 @          IN      NS      ns1.$domain.
 ns1        IN      A       $SLAV_IP
 END
-fi
+    fi
 
 if [[ "$rev_choice" == 'y' && "$type" == "slave" ]]; then
     # Reverse Zone File
@@ -322,5 +324,4 @@ fi
 
 
     
-
 fi
