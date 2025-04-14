@@ -82,7 +82,7 @@ else
             break
         fi 
     done
-    fi
+
     echo "DNS SETUP
     --------------------------------------------
     domain: $domain
@@ -102,9 +102,9 @@ ZONE_FILE=${ZONE_PATH}/db.${domain}
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file /var/cache/bind/db.$domain;"
+            echo "file "/var/cache/bind/db.$domain";"
         else
-            echo "file $ZONE_FILE;"
+            echo "file "$ZONE_FILE";"
         fi )
 };
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
@@ -129,9 +129,9 @@ END
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file /var/cache/bind/db.$domain;"
+            echo "file "/var/cache/bind/db.$domain";"
             else
-                echo "file $ZONE_FILE;"
+                echo "file "$ZONE_FILE";"
             fi )
 };
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
@@ -140,9 +140,9 @@ END
     zone "$REV_ZONE" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file /var/cache/bind/db.$REV_ZONE;"
+            echo "file "/var/cache/bind/db.$REV_ZONE";"
         else
-            echo "file $REV_FILE;"
+            echo "file "$REV_FILE";"
         fi )
 };
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
@@ -157,9 +157,9 @@ END
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file /var/cache/bind/db.$domain;"
+            echo "file "/var/cache/bind/db.$domain";"
         else
-            echo "file $ZONE_FILE;"
+            echo "file "$ZONE_FILE";"
         fi )
 };
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
@@ -185,9 +185,9 @@ END
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file /var/cache/bind/db.$domain;"
+            echo "file "/var/cache/bind/db.$domain";"
         else
-            echo "file $ZONE_FILE;"
+            echo "file "$ZONE_FILE";"
         fi )
 };
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
@@ -196,9 +196,9 @@ END
     zone "$REV_ZONE" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file /var/cache/bind/db.$REV_ZONE;"
+            echo "file "/var/cache/bind/db.$REV_ZONE";"
         else
-            echo "file $REV_FILE;"
+            echo "file "$REV_FILE";"
         fi )
 };
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
@@ -284,7 +284,7 @@ ns1        IN      A       $IP_ADDR
 END
 fi
 
-if [[ "$rev_choice" == 'y' && "$type" == "slave" ]]; then
+if [[ "$rev_choice" == 'y' && "$type" == "master" ]]; then
     # Reverse Zone File
     echo "Creating reverse zone file: $REV_FILE"
     touch $REV_FILE
