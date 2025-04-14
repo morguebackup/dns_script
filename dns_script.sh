@@ -173,6 +173,7 @@ END
                 else
                     IFS='.' read -r A B C D <<< "$IP_ADDR" #splits IP add by the periods and assigns each section  to a vairbale
                     REV_ZONE="${C}.${B}.${A}.in-addr.arpa"
+        fi
 
 
     REV_FILE="$ZONE_PATH/db.${REV_ZONE}"
@@ -205,7 +206,7 @@ END
 
 END
     fi 
-   echo "named.conf.local files modified. Now making zone files...."
+    echo "named.conf.local files modified. Now making zone files...."
     
  
    if [[ "$rev_choice" == 'n' && "$type" == "slave" ]]; then
