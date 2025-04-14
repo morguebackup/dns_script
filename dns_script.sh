@@ -211,6 +211,7 @@ END
    if [[ "$rev_choice" == 'n' && "$type" == "slave" ]]; then
    
     echo "Creating forward zone file: $ZONE_FILE"
+    touch /var/cache/bind/db.$domain
     cat <<END > /var/cache/bind/db.$domain
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -229,7 +230,9 @@ if [[ "$rev_choice" == 'y' && "$type" == "slave" ]]; then
     # Reverse Zone File
     echo "Creating reverse zone file: $REV_FILE"
     echo "making correct permissions"
+    touch /var/cache/bind/db.$REV_ZONE
     sudo chown named:named /var/cache/bind/db.$REV_ZONE
+    touch /var/cache/bind/db.$REV_ZONE
     cat <<END > /var/cache/bind/db.$REV_ZONE
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -244,6 +247,7 @@ ${D}      IN      PTR     $domain.
 END
     echo "Creating forward zone file: $ZONE_FILE"
     echo "making correct permissions"
+    touch /var/cache/bind/db.$domain
     sudo chown named:named /var/cache/bind/db.$domain
     cat <<END > /var/cache/bind/db.$domain
 \$TTL    86400
@@ -263,6 +267,7 @@ if [[ "$rev_choice" == 'n' && "$type" == "master" ]]; then
    
     echo "Creating forward zone file: $ZONE_FILE"
     echo "making correct permissions"
+    touch $ZONE_FILE
     sudo chown named:named $ZONE_FILE
     cat <<END > "$ZONE_FILE"
 \$TTL    86400
@@ -281,6 +286,7 @@ fi
 if [[ "$rev_choice" == 'y' && "$type" == "slave" ]]; then
     # Reverse Zone File
     echo "Creating reverse zone file: $REV_FILE"
+    touch $REV_FILE
     echo "making correct permissions"
     sudo chown named:named $REV_FILE
     cat <<END > "$REV_FILE"
@@ -296,6 +302,7 @@ if [[ "$rev_choice" == 'y' && "$type" == "slave" ]]; then
 ${D}      IN      PTR     $domain.
 END
     echo "Creating forward zone file: $ZONE_FILE"
+    touch $ZONE_FILE
     echo "making correct permissions"
     sudo chown named:named $ZONE_FILE
     cat <<END > "$ZONE_FILE"
