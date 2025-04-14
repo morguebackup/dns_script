@@ -93,7 +93,7 @@ else
     path: $ZONE_PATH
     overwrite config files: $OVERWRITE"
 
-ZONE_FILE=${ZONE_PATH}db.${domain}
+ZONE_FILE=${ZONE_PATH}/db.${domain}
 
     if [[ "$OVERWRITE" == 'y' && "$rev_choice" == 'n' ]]; then
     echo "overwriting named.conf.local file"
