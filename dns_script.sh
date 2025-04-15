@@ -213,6 +213,7 @@ END
     echo "making correct permissions"
     touch /var/cache/bind/db.$domain
     sudo chown root:bind /var/cache/bind/db.$domain
+    sudo chmod 644 /var/cache/bind/db.$domain
     cat <<END > /var/cache/bind/db.$domain
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -233,6 +234,7 @@ if [[ "$rev_choice" == 'y' && "$type" == "slave" ]]; then
     echo "making correct permissions"
     touch /var/cache/bind/db.$REV_ZONE
     sudo chown root:bind /var/cache/bind/db.$REV_ZONE
+    sudo chmod 644 /var/cache/bind/db.$REV_ZONE
     touch /var/cache/bind/db.$REV_ZONE
     cat <<END > /var/cache/bind/db.$REV_ZONE
 \$TTL    86400
@@ -250,6 +252,7 @@ END
     echo "making correct permissions"
     touch /var/cache/bind/db.$domain
     sudo chown root:bind /var/cache/bind/db.$domain
+    sudo chmod 664 /var/cache/bind/db.$domain
     cat <<END > /var/cache/bind/db.$domain
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -270,6 +273,7 @@ if [[ "$rev_choice" == 'n' && "$type" == "master" ]]; then
     echo "making correct permissions"
     touch $ZONE_FILE
     sudo chown root:bind $ZONE_FILE
+    sudo chmod 644 $ZONE_FILE
     cat <<END > "$ZONE_FILE"
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -290,6 +294,7 @@ if [[ "$rev_choice" == 'y' && "$type" == "master" ]]; then
     touch $REV_FILE
     echo "making correct permissions"
     sudo chown root:bind $REV_FILE
+    sudo chmod 644 $REV_FILE
     cat <<END > "$REV_FILE"
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -306,6 +311,7 @@ END
     touch $ZONE_FILE
     echo "making correct permissions"
     sudo chown root:bind $ZONE_FILE
+    sudo chmod 644 $ZONE_FILE
     cat <<END > "$ZONE_FILE"
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
