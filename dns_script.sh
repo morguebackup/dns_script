@@ -25,7 +25,7 @@ else
     done
 
     while true; do
-        read -p "is this a master or slave type?" type
+        read -p "is this a master or slave type? " type
         type=${type,,} #takes the lowercase of input
         if [[ "$type" != 'master' && "$type" != 'slave' ]]; then
         echo "incorrext option/formatting"
@@ -102,9 +102,9 @@ ZONE_FILE=${ZONE_PATH}/db.${domain}
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file "/var/cache/bind/db.$domain";"
+            echo "file \"/var/cache/bind/db.$domain\";"
         else
-            echo "file "$ZONE_FILE";"
+            echo "file \"$ZONE_FILE\";"
         fi )
 };
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
@@ -124,46 +124,44 @@ END
 
     echo "overwriting named.conf.local file"
     cat <<END > /etc/bind/named.conf.local #OVERWRITRES THE FILE UNTIL END
-    ---Auto-DNS-CONFIG--
+    #---Auto-DNS-CONFIG--
 
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file "/var/cache/bind/db.$domain";"
+            echo "file \"/var/cache/bind/db.$domain\";"
             else
-                echo "file "$ZONE_FILE";"
+                echo "file \"$ZONE_FILE\";"
             fi )
-};
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
-    };
+};
 
     zone "$REV_ZONE" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file "/var/cache/bind/db.$REV_ZONE";"
+            echo "file \"/var/cache/bind/db.$REV_ZONE\";"
         else
-            echo "file "$REV_FILE";"
+            echo "file \"$REV_FILE\";"
         fi )
-};
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
-    };
+};
 
 END
     
     elif [[ "$OVERWRITE" == 'n' && "$rev_choice" == 'n' ]]; then
     echo "overwriting named.conf.local file"
     cat <<END >> /etc/bind/named.conf.local #APPENDS THE FILE UNTIL END
-    ---Auto-DNS-CONFIG--
+    #---Auto-DNS-CONFIG--
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file "/var/cache/bind/db.$domain";"
+            echo "file \"/var/cache/bind/db.$domain\";"
         else
-            echo "file "$ZONE_FILE";"
+            echo "file \"$ZONE_FILE\";"
         fi )
-};
+
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
-    };
+};
 
 END
     elif [[ "$OVERWRITE" == 'n' && "$rev_choice" == 'y' ]]; then
@@ -180,29 +178,29 @@ END
 
     echo "overwriting named.conf.local file"
     cat <<END >> /etc/bind/named.conf.local #aPPENDS THE FILE UNTIL END
-    ---Auto-DNS-CONFIG--
+    #---Auto-DNS-CONFIG--
 
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file "/var/cache/bind/db.$domain";"
+            echo "file \"/var/cache/bind/db.$domain\";"
         else
-            echo "file "$ZONE_FILE";"
+            echo "file \"$ZONE_FILE\";"
         fi )
-};
+
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
-    };
+};
 
     zone "$REV_ZONE" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
-            echo "file "/var/cache/bind/db.$REV_ZONE";"
+            echo "file \"/var/cache/bind/db.$REV_ZONE\";"
         else
-            echo "file "$REV_FILE";"
+            echo "file \"$REV_FILE\";"
         fi )
-};
+
         $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
-    };
+};
 
 END
     fi 
@@ -214,7 +212,7 @@ END
     echo "Creating forward zone file: $ZONE_FILE"
     echo "making correct permissions"
     touch /var/cache/bind/db.$domain
-    sudo chown bind:bind /var/cache/bind/db.$domain
+    sudo chown root:bind /var/cache/bind/db.$domain
     cat <<END > /var/cache/bind/db.$domain
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -234,7 +232,7 @@ if [[ "$rev_choice" == 'y' && "$type" == "slave" ]]; then
     echo "Creating reverse zone file: $REV_FILE"
     echo "making correct permissions"
     touch /var/cache/bind/db.$REV_ZONE
-    sudo chown bind:bind /var/cache/bind/db.$REV_ZONE
+    sudo chown root:bind /var/cache/bind/db.$REV_ZONE
     touch /var/cache/bind/db.$REV_ZONE
     cat <<END > /var/cache/bind/db.$REV_ZONE
 \$TTL    86400
@@ -251,7 +249,7 @@ END
     echo "Creating forward zone file: $ZONE_FILE"
     echo "making correct permissions"
     touch /var/cache/bind/db.$domain
-    sudo chown bind:bind /var/cache/bind/db.$domain
+    sudo chown root:bind /var/cache/bind/db.$domain
     cat <<END > /var/cache/bind/db.$domain
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -271,7 +269,7 @@ if [[ "$rev_choice" == 'n' && "$type" == "master" ]]; then
     echo "Creating forward zone file: $ZONE_FILE"
     echo "making correct permissions"
     touch $ZONE_FILE
-    sudo chown bind:bind $ZONE_FILE
+    sudo chown root:bind $ZONE_FILE
     cat <<END > "$ZONE_FILE"
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -291,7 +289,7 @@ if [[ "$rev_choice" == 'y' && "$type" == "master" ]]; then
     echo "Creating reverse zone file: $REV_FILE"
     touch $REV_FILE
     echo "making correct permissions"
-    sudo chown bind:bind $REV_FILE
+    sudo chown root:bind $REV_FILE
     cat <<END > "$REV_FILE"
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -307,7 +305,7 @@ END
     echo "Creating forward zone file: $ZONE_FILE"
     touch $ZONE_FILE
     echo "making correct permissions"
-    sudo chown bind:bind $ZONE_FILE
+    sudo chown root:bind $ZONE_FILE
     cat <<END > "$ZONE_FILE"
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -322,6 +320,24 @@ ns1        IN      A       $IP_ADDR
 END
 fi
 
+#this is to like edit to so that named only takes IPv4 addresses UGH
+sudo systemctl edit named
+cat <<END | sudo tee /etc/systemd/system/named.service.d/override.conf > /dev/null
+[Service]
+ExecStart=
+ExecStart=/usr/sbin/named -f -u bind -4
+END
+#RESTART EVERYTHING 
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl restart named
+
+
+
+sudo named-checkconf || { echo "named.conf has syntax errors"; exit 1; }
+sudo systemctl restart bind9 || { echo "Failed to restart BIND9"; exit 1; }
+sudo systemctl status bind9 || { echo "status gone wrong"; exit 1; }
+echo "DNS CONFIGS ARE COMPLETED!! please double check indiviula configurations and such and network connections"
 
 
 
