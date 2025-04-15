@@ -2,7 +2,7 @@
 LOGFILE="/var/log/dns_setup.log"
 check_root() {
 
-GROUP=$(id -gn) gets the rpimary group form the user
+GROUP=$(id -gn) #gets the rpimary group form the user
 
 if [[ "$GROUP" == "bind" || "$GROUP" == "root" ]]; then
     echo "You are in the allowed group, nice!"
@@ -34,7 +34,7 @@ input_domain() {
     while true; do
         read -p "enter the IP for the domain (master): $domain: " IP_ADDR #takes IP input
         if [[ ! "$IP_ADDR" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then #if the Ip add is not equal tot eh regex match of 1 or more numbers after every period
-            echo "not a valid IP formatting!!!" | tee -a "$LOGFILE"
+            echo "not a valid IP formatting!!!" | tee -a "$LOGFILE" #puts it in the log file
         else
             echo "IP; $IP_ADDR"
             break #breaks da loop
@@ -124,7 +124,7 @@ ZONE_FILE=${ZONE_PATH}/db.${domain}
     if [[ "$OVERWRITE" == 'y' && "$rev_choice" == 'n' ]]; then
     echo "overwriting named.conf.local file" | tee -a "$LOGFILE"
     cat <<END > /etc/bind/named.conf.local #OVERWRITRES THE FILE UNTIL END
-    ---Auto-DNS-CONFIG--
+    #---Auto-DNS-CONFIG--
     zone "$domain" {
         type $type;
         $( if [[ "$type" == "slave" ]]; then 
@@ -234,7 +234,7 @@ END
 }
 writing_zones() {
     echo "named.conf.local files modified. Now making zone files...." | tee -a "$LOGFILE"
-    
+    # now making the zones files
  
    if [[ "$rev_choice" == 'n' && "$type" == "slave" ]]; then
    
@@ -242,7 +242,7 @@ writing_zones() {
     echo "making correct permissions"
     touch /var/cache/bind/db.$domain
     sudo chown root:bind /var/cache/bind/db.$domain
-    sudo chmod 644 /var/cache/bind/db.$domain
+    sudo chmod 644 /var/cache/bind/db.$domain #chnag permisisons
     cat <<END > /var/cache/bind/db.$domain
 \$TTL    86400
 @       IN      SOA     ns1.$domain. admin.$domain. (
@@ -258,7 +258,7 @@ END
     fi
 
 if [[ "$rev_choice" == 'y' && "$type" == "slave" ]]; then
-    # Reverse Zone File
+    
     echo "Creating reverse zone file: $REV_FILE"
     echo "making correct permissions"
     if [[! -f "/var/cache/bind/db.$REV_ZONE" ]]; then #if the revs=zone alreayd exists
@@ -327,7 +327,7 @@ END
 fi
 
 if [[ "$rev_choice" == 'y' && "$type" == "master" ]]; then
-    # Reverse Zone File
+   
     echo "Creating reverse zone file: $REV_FILE"
     if [[! -f "$REV_FILE" ]]; then
     touch $REV_FILE
@@ -396,6 +396,21 @@ and such and network connections" | tee -a "$LOGFILE"
 
 }
 
+cronjob() {
+
+CRONTAB_C=$(crontab -l 2>/dev/null) #opens the list sof crontabs and outputs to nothing
+
+
+CRON_JOB='@yearly /usr/local/bin/dns_script.sh' #makes it a yearly script
+
+# Check if it's already there, and add it if not
+if ! echo "$CRONTAB_C" | grep -Fxq "$CRON_JOB"; then #grepping the conjob in their
+    (echo "$CRONTAB_C"; echo "$CRON_JOB") | crontab - #if not their then echo it in
+    echo "Cronjob added!."
+else
+    echo "cronjob already exists..."
+fi
+}
 
 
 
@@ -419,6 +434,7 @@ main() {
     writing_zones
     change_IPv4
     restart
+    cronjob
 
 }
 main
