@@ -282,7 +282,7 @@ END
         cat <<END >> /var/cache/bind/db.$REV_ZONE
 ${D}    IN      PTR         $domain.
 END
-
+    fi
 
     echo "Creating forward zone file: $ZONE_FILE"
     echo "making correct permissions"
@@ -351,7 +351,7 @@ END
         cat <<END >> "$REV_FILE"
 ${D}    IN      PTR         $domain.
 END
-
+    fi
     echo "Creating forward zone file: $ZONE_FILE"
     touch $ZONE_FILE
     echo "making correct permissions"
