@@ -331,7 +331,6 @@ if [[ "$rev_choice" == 'y' && "$type" == "master" ]]; then
     echo "Creating reverse zone file: $REV_FILE"
     if [[! -f "$REV_FILE" ]]; then
     touch $REV_FILE
-    fi
     echo "making correct permissions"
     sudo chown root:bind $REV_FILE
     sudo chmod 644 $REV_FILE
