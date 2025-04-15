@@ -133,8 +133,7 @@ ZONE_FILE=${ZONE_PATH}/db.${domain}
             echo "file \"$ZONE_FILE\";"
         fi )
 };
-        $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
-    };
+        $( [[ "$type" == "slave" ]] && echo "masters { "$IP_ADDR"; };" )  # aaddress of the master server
 
 END
     elif [[ "$OVERWRITE" == 'y' && "$rev_choice" == 'y' ]]; then
@@ -159,7 +158,7 @@ END
             else
                 echo "file \"$ZONE_FILE\";"
             fi )
-        $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
+        $( [[ "$type" == "slave" ]] && echo "masters { "$IP_ADDR"; };" )  # aaddress of the master server
 };
 
     zone "$REV_ZONE" {
@@ -169,7 +168,7 @@ END
         else
             echo "file \"$REV_FILE\";"
         fi )
-        $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
+        $( [[ "$type" == "slave" ]] && echo "masters { "$IP_ADDR"; };" )  # aaddress of the master server
 };
 
 END
@@ -186,7 +185,7 @@ END
             echo "file \"$ZONE_FILE\";"
         fi )
 
-        $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
+        $( [[ "$type" == "slave" ]] && echo "masters { "$IP_ADDR"; };" )  # aaddress of the master server
 };
 
 END
@@ -214,7 +213,7 @@ END
             echo "file \"$ZONE_FILE\";"
         fi )
 
-        $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
+        $( [[ "$type" == "slave" ]] && echo "masters { "$IP_ADDR"; };" )  # aaddress of the master server
 };
 
     zone "$REV_ZONE" {
@@ -225,7 +224,7 @@ END
             echo "file \"$REV_FILE\";"
         fi )
 
-        $( [[ "$type" == "slave" ]] && echo "masters { "$domain"; };" )  # aaddress of the master server
+        $( [[ "$type" == "slave" ]] && echo "masters { "$IP_ADDR"; };" )  # aaddress of the master server
 };
 
 END
