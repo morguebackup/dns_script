@@ -375,7 +375,6 @@ fi
 
 change_IPv4() {
 #this is to like edit to so that named only takes IPv4 addresses UGH
-sudo systemctl edit named
 sudo tee /etc/systemd/system/named.service.d/override.conf > /dev/null << END #dev null gets rid of the output
 [Service]
 ExecStart=
@@ -384,13 +383,12 @@ END
 #RESTART EVERYTHING 
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
-sudo systemctl restart named
+sudo systemctl restart named 
 }
 
 restart() {
 sudo named-checkconf || { echo "named.conf has syntax errors"; exit 1; } | tee -a "$LOGFILE"
 sudo systemctl restart bind9 || { echo "Failed to restart BIND9"; exit 1; } | tee -a "$LOGFILE"
-sudo systemctl status bind9 || { echo "status gone wrong"; exit 1; } | tee -a "$LOGFILE"
 echo "DNS BASE CONFIGS ARE COMPLETED!! please double check individual configurations/zones 
 and such and network connections" | tee -a "$LOGFILE"
 
